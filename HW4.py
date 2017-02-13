@@ -67,7 +67,17 @@ nytimes_headlines = nytimes_headlines[:10]
 ## Find the container that holds the name that belongs to that person (HINT: look for something unique, like a property element...)
 ## Find the container that holds the title that belongs to that person (HINT: a class name)
 ## Grab the text of each of those elements and put them in the dictionary umsi_titles properly
+response = requests.get("https://www.si.umich.edu/directory?field_person_firstname_value=&field_person_lastname_value=&rid=All")
+htmldoc = response.text
 
+soup = BeautifulSoup(htmldoc,"html.parser")
+people = soup.find_all("div",{"class":"views-row"})
+umsi_titles = {}
+
+for person in people:
+	name = (person.find_all(class_="field-name-title"))[0].text
+	title = (person.find_all(class_="field-name-field-person-titles"))[0].text
+	umsi_titles[name] = title
 
 
 
